@@ -53,6 +53,6 @@ jobs:
           upload_url: https://uploads.github.com/repos/fourtf/localhoster/releases/23893083/assets{?name,label} # find out this value by opening https://api.github.com/repos/<owner>/<repo>/releases in your browser and copy the full "upload_url" value including the {?name,label} part
           release_id: 23893083 # same as above (id can just be taken out the upload_url, it's used to find old releases)
           asset_path: ./linux.zip # path to archive to upload
-          asset_name: localhoster-windows-nightly-$$.zip # name to upload the release as, use $$ to insert date (YYYYMMDD) and 6 letter commit hash
+          asset_name: localhoster-linux-nightly-$$.zip # name to upload the release as, use $$ to insert date (YYYYMMDD) and 6 letter commit hash
           asset_content_type: application/zip # required by GitHub API
           max_releases: 2
