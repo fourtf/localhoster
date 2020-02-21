@@ -25,9 +25,13 @@ jobs:
 
     - name: Build
       run: |
+        echo --- LINUX BUILD ---
         go build -v -o ./localhoster .
         zip linux.zip localhoster ./licenses/*
         rm localhoster
+        
+        echo --- WINDOWS BUILD ---
+        GOOS=windows GOARCH=386 go build -v -o localhoster.exe
     
     - name: Create Release
       id: create_release
@@ -38,13 +42,24 @@ jobs:
         tag_name: nightly
         release_name: nightly
         
-    - name: Upload Release Asset
-      id: upload-release-asset 
+    - name: Upload Linux Asset
+      id: upload-linux-asset 
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./linux.zip
-        asset_name: linux
+        asset_name: linux.zip
         asset_content_type: application/zip
+        
+    - name: Upload Windows Asset
+      id: upload-windows-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./localhoster.exe
+        asset_name: localhoster.exe
+        asset_content_type: application/octet-stream
