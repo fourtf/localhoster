@@ -23,11 +23,9 @@ const (
 
 type config struct {
 	Hosts map[string]struct {
-		Service string `yaml:"Service"`
-	} `yaml:"Hosts"`
-	Services map[string]struct {
-		Install string `yaml:"Install"`
-	} `yaml:"Services"`
+		Type string
+		Path *string
+	}
 }
 
 func main() {
@@ -46,12 +44,12 @@ func main() {
 	updateHosts(hosts)
 
 	// serve http
-	serve()
+	serve(cfg)
 }
 
 func loadConfig() (*config, error) {
 	// load config
-	data, err := ioutil.ReadFile("/etc/localhosts.yaml")
+	data, err := ioutil.ReadFile(configFilePath)
 	if err != nil {
 		return nil, err
 	}
@@ -66,9 +64,18 @@ func loadConfig() (*config, error) {
 	return cfg, nil
 }
 
-func serve() {
+func serve(cfg *config) {
 	mux := mux.NewRouter()
-	//mux.Host(host).Handler(http.FileServer(http.Dir(path)))
+
+	for name, data := range cfg.Hosts {
+		if data.Type == "files" {
+			if data.Path == nil {
+				log.Println("Expected 'path' for 'files'!")
+				continue
+			}
+			mux.Host(name).Handler(http.FileServer(http.Dir(*data.Path)))
+		}
+	}
 
 	serv := http.Server{
 		ReadTimeout:  30 * time.Second,
@@ -105,7 +112,7 @@ func updateHosts(hosts []string) {
 		strings.Join(addLocalhost(hosts), "\n") + "\n" + hostfileAreaEnd)
 
 	// read hosts
-	file, err := os.OpenFile("/etc/hosts", os.O_RDWR|os.O_EXCL, 0644)
+	file, err := os.OpenFile(hostsFilePath, os.O_RDWR|os.O_EXCL, 0644)
 	if err != nil {
 		log.Println(err)
 	}
@@ -139,7 +146,7 @@ func updateHosts(hosts []string) {
 		file.Write(formattedHosts)
 	}
 
-	log.Println("Updated /etc/hosts")
+	log.Println("Updated " + hostsFilePath)
 }
 
 func addLocalhost(items []string) []string {
