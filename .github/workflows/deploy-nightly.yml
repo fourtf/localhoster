@@ -43,7 +43,7 @@ jobs:
           asset_path: ./windows.zip # path to archive to upload
           asset_name: localhoster-windows-nightly-$$.zip # name to upload the release as, use $$ to insert date (YYYYMMDD) and 6 letter commit hash
           asset_content_type: application/zip # required by GitHub API
-          max_releases: 2
+          max_releases: 1
 
     - name: Deploy Linux
       uses: WebFreak001/deploy-nightly@v1.0.1
@@ -55,4 +55,4 @@ jobs:
           asset_path: ./linux.zip # path to archive to upload
           asset_name: localhoster-linux-nightly-$$.zip # name to upload the release as, use $$ to insert date (YYYYMMDD) and 6 letter commit hash
           asset_content_type: application/zip # required by GitHub API
-          max_releases: 2
+          max_releases: 1
