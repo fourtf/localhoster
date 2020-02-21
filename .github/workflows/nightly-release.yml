@@ -33,14 +33,14 @@ jobs:
         echo --- WINDOWS BUILD ---
         GOOS=windows GOARCH=386 go build -v -o localhoster.exe
     
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: nightly
-        release_name: nightly
+    #- name: Create Release
+    #  id: create_release
+    #  uses: actions/create-release@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    tag_name: nightly
+    #    release_name: nightly
         
     - name: Upload Linux Asset
       id: upload-linux-asset 
