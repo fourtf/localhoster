@@ -13,7 +13,7 @@ Unix: `/etc/localhoster.yaml`
 
 ## Example configuration
 
-This example will make the Font files accessible by navigating to `hosts/` in the browser.
+This example will make the Font files accessible by navigating to `files/` in the browser.
 
 ``` yaml
 hosts:
